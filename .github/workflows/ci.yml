@@ -9,7 +9,7 @@ on:
 jobs:
   build_and_test:
     name: Build & Test
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -23,7 +23,11 @@ jobs:
       - name: Build Place File for Testing
         run: rojo build -o test.rbxlx
 
-      # Replacing the old run-in-roblox installation
+      - name: Install Roblox Studio
+        uses: luau-dev/setup-roblox-studio@v0.1.6
+        with:
+          channel: LIVE
+
       - name: Install Tools
         run: npm install -g run-in-roblox
 
