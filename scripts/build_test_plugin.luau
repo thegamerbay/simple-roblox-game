@@ -7,6 +7,6 @@ local scriptInstance = roblox.Instance.new("Script")
 scriptInstance.Name = "run_tests"
 scriptInstance.Source = scriptContent
 
-local modelFile = roblox.serializePlace({scriptInstance}, false) -- false means rbxm/rbxmx
+local modelFile = roblox.serializeModel({scriptInstance}, true) -- true means rbxmx (xml format)
 fs.writeFile("run_tests.rbxmx", modelFile)
 print("Successfully generated run_tests.rbxmx")
