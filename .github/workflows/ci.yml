@@ -27,6 +27,7 @@ jobs:
         uses: OrbitalOwen/roblox-win-installer-action@1.1
         with:
           cookie: ${{ secrets.ROBLOSECURITY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Tools
         run: npm install -g run-in-roblox
