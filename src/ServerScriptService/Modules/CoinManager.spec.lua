@@ -39,4 +39,47 @@ return function()
             expect(stats.color).to.equal(BrickColor.new("Bright yellow"))
         end)
     end)
+    
+    describe("CoinManager Engine Logic", function()
+        local Workspace = game:GetService("Workspace")
+        local CollectionService = game:GetService("CollectionService")
+        
+        it("should create a collect effect", function()
+            local pos = Vector3.new(10, 20, 30)
+            local color = Color3.new(1, 0, 0)
+            
+            CoinManager.createCollectEffect(pos, color)
+            
+            -- the attachment is parented to Workspace.Terrain
+            local foundAttachment = false
+            for _, child in pairs(Workspace.Terrain:GetChildren()) do
+                if child:IsA("Attachment") and child.Position == pos then
+                    foundAttachment = true
+                    break
+                end
+            end
+            expect(foundAttachment).to.equal(true)
+        end)
+
+        it("should spawn a coin", function()
+            -- Find the coins before we spawn
+            local oldCoins = {}
+            for _, c in pairs(CollectionService:GetTagged("AnimatedCoin")) do
+                oldCoins[c] = true
+            end
+            
+            local startCount = #CollectionService:GetTagged("AnimatedCoin")
+            CoinManager.spawnCoin()
+            local endCount = #CollectionService:GetTagged("AnimatedCoin")
+            
+            expect(endCount).to.equal(startCount + 1)
+            
+            -- Clean up ONLY the coin spawned by the test so it doesn't leak into the actual game
+            for _, coin in pairs(CollectionService:GetTagged("AnimatedCoin")) do
+                if not oldCoins[coin] and coin.Parent == Workspace then
+                    coin:Destroy()
+                end
+            end
+        end)
+    end)
 end
