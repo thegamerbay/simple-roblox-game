@@ -3,6 +3,7 @@
 *.rbxlx
 *.rbxm
 *.rbxmx
+roblox.yml
 
 # Aftman
 .aftman/
@@ -35,3 +36,4 @@ yarn-error.log
 *.log
 .temp/
 .tmp/
+coverage.xml

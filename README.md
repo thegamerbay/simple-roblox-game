@@ -4,7 +4,16 @@
 ![Lua](https://img.shields.io/badge/Lua-Language-2C2D72?style=for-the-badge&logo=lua&logoColor=white)
 ![Rojo](https://img.shields.io/badge/Rojo-Sync-FF4B4B?style=for-the-badge)
 
-A basic but complete starting point for a Roblox game, featuring server and client architecture, local environments, and game logic! The project demonstrates an elegant synchronization process between your local IDE (VS Code) and Roblox Studio using **Rojo**.
+<div align="center">
+
+[![CI](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml/badge.svg)](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/thegamerbay/simple-roblox-game/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/github/thegamerbay/simple-roblox-game)
+[![Release](https://img.shields.io/github/v/release/thegamerbay/simple-roblox-game)](https://github.com/thegamerbay/simple-roblox-game/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
+A basic but complete starting point for a professional Roblox game, featuring modular server architecture, unit testing, and continuous integration! The project demonstrates an elegant synchronization process between your local IDE (VS Code) and Roblox Studio using **Rojo**, strict package management using **Wally**, and toolchain management using **Aftman**.
 
 🔗 **GitHub Repository:** [thegamerbay/simple-roblox-game](https://github.com/thegamerbay/simple-roblox-game)
 
@@ -21,61 +30,55 @@ This project isn't just a foundation; it comes with a built-in game loop that pe
   * There's a **20% chance** to spawn a **Rare Red Coin** that grants **5 points** instead of the usual 1 point for a yellow coin!
   * The player's **Leaderstats** track the collected coins and update their score on the Leaderboard in the top-right corner.
   * The server then automatically spawns a brand new coin nearby.
-* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of Server-Side Parts creation, `Touched` events, `RunService` animations, resource cleanup with `Debris`, real-time GUI/Leaderboard updates, and keeping the game state secure.
+* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of creating an isolated, testable **ModuleScript** (`CoinManager.lua`), utilizing `TestEZ` for specifications, and securely keeping the game state on the server (`GameLogic.server.lua`).
+
+---
+
+## 🛠️ Tech Stack & Tooling
+
+This project uses modern Roblox development standards:
+* **[Rojo](https://rojo.space/)**: Syncs external files into Roblox Studio.
+* **[Aftman](https://github.com/LPGhatguy/aftman)**: Cross-platform toolchain manager for Roblox CLI tools (Rojo, Wally, Selene).
+* **[Wally](https://wally.run/)**: The package manager for Roblox. We use it to pull our testing framework, **TestEZ**.
+* **[Selene](https://kampfkarren.github.io/selene/)**: A blazing fast linter crafted specifically for Luau and Roblox standard libraries.
+* **[GitHub Actions](https://github.com/features/actions)**: Automated CI/CD pipelines checking code quality, tests, and publishing `.rbxlx` places on releases.  Codecov integration automatically comments on pull requests.
 
 ---
 
 ## ⚡ Setup Guide
 
-The development workflow here mirrors classic web or software development: we use a local server running inside VS Code that streams our code in real-time straight to the client (Roblox Studio).
-
-The easiest and most popular way to use Rojo is via the official extension for **Visual Studio Code**.
-
-### Step 1: Getting the Project
-
-1. Open your terminal or command prompt.
-2. Clone the repository to your computer by running:
+### Step 1: Getting the Project & Tools
+1. Clone the repository: `git clone https://github.com/thegamerbay/simple-roblox-game.git`
+2. Open the folder in VS Code.
+3. Install the tools using Aftman:
    ```bash
-   git clone https://github.com/thegamerbay/simple-roblox-game.git
+   aftman install
    ```
-3. Open the newly created `simple-roblox-game` folder in **VS Code**.
+4. Install Roblox library dependencies using Wally:
+   ```bash
+   wally install
+   ```
 
-### Step 2: Installing Rojo in VS Code
+### Step 2: Running Rojo
+1. Install the official **Rojo** extension by `evaera` in VS Code.
+2. Open the VS Code Command Palette (`Ctrl+Shift+P`) and choose `Rojo: Start server`.
 
-1. In VS Code, open the **Extensions** panel (`Ctrl+Shift+X` / `Cmd+Shift+X`).
-2. Type **Rojo** into the search bar.
-3. Find the extension authored by **evaera** (the official one) and click **Install**.
+### Step 3: Connecting Roblox Studio
+1. Open up an empty modern **Baseplate** in Roblox Studio.
+2. Under the **Plugins** tab, click **Rojo** and then **Connect**.
+3. *Magic!* Your scripts and Wally packages instantiate perfectly into `ServerScriptService` and `ReplicatedStorage`.
 
-### Step 3: Installing the Roblox Studio Plugin
+### Step 4: Playtesting & Unit Testing
+1. Press **Play** (`F5`) in Roblox Studio.
+2. In the Output window, you will immediately see the **TestEZ runner** executing our `CoinManager.spec.lua` tests and turning green!
+3. Run into the floating coin to pick it up and see your points increase on the leaderboard.
+4. *Note: If you publish the game, the test runner detects it is no longer in Studio and safely exits without performance hits.*
 
-For Roblox Studio to receive files sent from VS Code, the receiving part of the plugin must be installed. This is safest to do straight from VS Code:
-
-1. In VS Code, open the **Command Palette** by pressing `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac).
-2. Type in the command: `Rojo: Install Roblox Studio Plugin` and hit **Enter**.
-3. The extension will automatically install the necessary plugin right into the correct directory on your computer.
-
-### Step 4: Starting the Rojo Server locally
-
-1. Ensure you currently have your project folder open in VS Code.
-2. Open the **Command Palette** (`Ctrl+Shift+P`) and type: `Rojo: Start server`.
-3. *Alternatively*, just click the **Rojo** button down in your VS Code **Status Bar** (bottom panel) and select `default.project.json`.
-4. The server will start (usually on port `34876`), and VS Code will begin tracking any changes you make to your files.
-
-### Step 5: Connecting Roblox Studio
-
-1. Open **Roblox Studio** and create a brand new empty place (using the **Baseplate** template).
-2. In the top navigation menu, head over to the **Plugins** tab.
-3. Locate the **Rojo** icon and click on it. A small plugin window will pop up.
-4. Simply click the **Connect** button in this window.
-5. *Hogwarts Magic:* Check your **Explorer** window on the right. Your `GameLogic` and `ClientInit` scripts should have instantly mapped themselves into `ServerScriptService` and `StarterPlayerScripts` respectively!
-
-### Step 6: Playtesting the Game
-
-1. In Roblox Studio, click **Play** (`F5`) on either the Home or Test tab.
-2. Your **Output** window should greet you with the welcome message from your local script.
-3. On the map, you will spot a green baseplate raised slightly off the ground, and a floating animated coin.
-4. Run your character over to touch the coin — it will play a sound, explode into sparks, disappear, and you'll be rewarded with **1 or 5 coins** in the top right leaderboard corner! In just a second, a brand new coin will spawn for you to collect.
-
+### 🔍 Linting Locally
+To run the Selene linter locally before pushing code:
+```bash
+selene src
+```
 
 ---
 
