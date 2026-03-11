@@ -11,7 +11,6 @@ roblox.yml
 # Wally (Package manager, if added in the future)
 Packages/
 ServerPackages/
-_Index/
 wally.lock
 
 # OS (System files)

@@ -1,3 +1,4 @@
+--!strict
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
@@ -14,7 +15,7 @@ baseplate.BrickColor = BrickColor.new("Dark green")
 baseplate.Parent = Workspace
 
 -- 2. Set up the points system
-Players.PlayerAdded:Connect(function(player)
+Players.PlayerAdded:Connect(function(player: Player)
     local leaderstats = Instance.new("Folder")
     leaderstats.Name = "leaderstats"
     leaderstats.Parent = player

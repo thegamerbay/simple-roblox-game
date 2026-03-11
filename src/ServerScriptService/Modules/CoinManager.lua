@@ -1,8 +1,19 @@
+--!strict
 local CoinManager = {}
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
+local CollectionService = game:GetService("CollectionService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Trove = require(ReplicatedStorage.Packages.Trove)
+
+export type CoinStats = {
+    value: number,
+    diameter: number,
+    thickness: number,
+    color: BrickColor
+}
 
 -- ==========================================
 -- 1. PURE LOGIC (Ideal for testing)
@@ -10,12 +21,12 @@ local Debris = game:GetService("Debris")
 CoinManager.Logic = {}
 
 -- Check if a rare coin should drop (20% chance)
-function CoinManager.Logic.isRare(randomRoll)
+function CoinManager.Logic.isRare(randomRoll: number): boolean
     return randomRoll <= 20
 end
 
 -- Get all coin stats based on rarity
-function CoinManager.Logic.getCoinStats(isRare)
+function CoinManager.Logic.getCoinStats(isRare: boolean): CoinStats
     if isRare then
         return { value = 5, diameter = 4, thickness = 0.4, color = BrickColor.new("Really red") }
     else
@@ -26,7 +37,7 @@ end
 -- ==========================================
 -- 2. ROBLOX ENGINE LOGIC (Effects and Spawn)
 -- ==========================================
-function CoinManager.createCollectEffect(position, color)
+function CoinManager.createCollectEffect(position: Vector3, color: Color3)
     local attachment = Instance.new("Attachment")
     attachment.Position = position
     attachment.Parent = Workspace.Terrain
@@ -49,7 +60,7 @@ function CoinManager.spawnCoin()
     local isRare = CoinManager.Logic.isRare(randomRoll)
     local stats = CoinManager.Logic.getCoinStats(isRare)
 
-    -- Create physical object
+    -- Create physical object (Hitbox only)
     local coin = Instance.new("Part")
     coin.Name = isRare and "RareCoin" or "Coin"
     coin.Shape = Enum.PartType.Cylinder
@@ -58,39 +69,44 @@ function CoinManager.spawnCoin()
     local startY = 9 
     local startPos = Vector3.new(math.random(-20, 20), startY, math.random(-20, 20))
     coin.Position = startPos
+    coin.Transparency = 1 -- Invisible on the server
     coin.BrickColor = stats.color
     coin.Material = Enum.Material.Neon
     coin.Anchored = true
     coin.CanCollide = false
     coin.Parent = Workspace
 
-    -- Animation
-    local timePassed = 0
-    local animationConnection
-    animationConnection = RunService.Heartbeat:Connect(function(deltaTime)
-        if not coin or not coin.Parent then
-            animationConnection:Disconnect()
-            return
-        end
-        timePassed += deltaTime
-        local rotation = CFrame.Angles(0, math.rad(100) * timePassed, 0)
-        local hoverOffset = Vector3.new(0, math.sin(timePassed * 3) * 0.5, 0)
-        coin.CFrame = CFrame.new(startPos + hoverOffset) * rotation
-    end)
+    -- Tag the coin so the client knows to animate it
+    CollectionService:AddTag(coin, "AnimatedCoin")
+
+    -- Setup Memory Management
+    local coinTrove = Trove.new()
+    coinTrove:AttachToInstance(coin) -- Ensures trove cleans up if coin is destroyed externally
 
     -- Collecting event
-    local touchConnection
-    touchConnection = coin.Touched:Connect(function(otherPart)
+    local touchConnection = coin.Touched:Connect(function(otherPart)
         local character = otherPart.Parent
         local humanoid = character:FindFirstChild("Humanoid")
 
         if humanoid then
             local player = Players:GetPlayerFromCharacter(character)
             if player then
-                touchConnection:Disconnect()
-                animationConnection:Disconnect()
+                local collectPos = coin.Position
+                local collectColor = coin.Color
 
-                player.leaderstats.Coins.Value += stats.value
+                -- This will disconnect touched event and destroy the coin
+                coinTrove:Clean() 
+                if coin and coin.Parent then
+                    coin:Destroy()
+                end
+
+                local leaderstats = player:FindFirstChild("leaderstats")
+                if leaderstats then
+                    local coins = leaderstats:FindFirstChild("Coins")
+                    if coins and coins:IsA("IntValue") then
+                        coins.Value += stats.value
+                    end
+                end
                 
                 local sound = Instance.new("Sound")
                 sound.SoundId = "rbxassetid://1347140027"
@@ -99,14 +115,15 @@ function CoinManager.spawnCoin()
                 sound:Play()
                 Debris:AddItem(sound, 2)
 
-                CoinManager.createCollectEffect(coin.Position, coin.Color)
-                coin:Destroy()
+                CoinManager.createCollectEffect(collectPos, collectColor)
                 
                 task.wait(1)
                 CoinManager.spawnCoin()
             end
         end
     end)
+    
+    coinTrove:Add(touchConnection)
 end
 
 return CoinManager

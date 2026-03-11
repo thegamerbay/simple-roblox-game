@@ -1,3 +1,4 @@
+--!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local RunService = game:GetService("RunService")
@@ -10,12 +11,13 @@ end
 
 -- Wait for the Packages folder to appear in the game
 local Packages = ReplicatedStorage:WaitForChild("Packages")
-local TestEZ = require(Packages:WaitForChild("TestEZ"))
+local TestEZ = require(Packages:WaitForChild("TestEZ") :: ModuleScript)
 
 print("====================================")
 print("🧪 STARTING AUTOMATIC TESTS (Studio Only) 🧪")
 print("====================================")
 
-TestEZ.TestBootstrap:run({ServerScriptService.Modules})
+local TestBootstrap = (TestEZ :: any).TestBootstrap
+TestBootstrap:run({ServerScriptService.Modules})
 
 print("====================================")
