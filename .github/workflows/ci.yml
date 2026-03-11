@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Tools
-        run: npm install -g run-in-roblox@0.2.35
+        run: npm install -g @rojo-rbx/run-in-roblox@0.2.35
 
       - name: Run Real Tests
         env:
