@@ -23,51 +23,31 @@ jobs:
       - name: Build Place File for Testing
         run: rojo build -o test.rbxlx
 
-      # For actual code coverage in Roblox, we need to run TestEZ inside Roblox Studio
-      # run-in-roblox allows running .rbxlx headless on GitHub Actions runners
-      - name: Install run-in-roblox
-        run: npm install -g run-in-roblox
-
-      - name: Run Tests and Generate Coverage
-        # This is a conceptual step: in a real Roblox project, you inject a script that runs TestEZ
-        # and outputs Cobertura XML. For this example we simulate the tests passing.
+      # Replacing the old run-in-roblox installation
+      - name: Install Tools
         run: |
-          echo "Simulating tests passing in headless Roblox Studio..."
-          # run-in-roblox --place test.rbxlx --script scripts/run_tests.lua
-          
-          # Generate a dummy Cobertura file for Codecov action to pick up
-          cat << 'EOF' > coverage.xml
-          <?xml version="1.0" ?>
-          <coverage branch-rate="0" branches-covered="0" branches-valid="0" complexity="0" line-rate="1" lines-covered="300" lines-valid="300" timestamp="1" version="gcovr 6.0">
-            <sources><source>.</source></sources>
-            <packages>
-              <package branch-rate="0" complexity="0" line-rate="1" name="src.ServerScriptService.Modules">
-                <classes>
-                  <class branch-rate="0" complexity="0" filename="src/ServerScriptService/Modules/CoinManager.lua" line-rate="1" name="CoinManager">
-                    <lines><line hits="1" number="1"/></lines>
-                  </class>
-                  <class branch-rate="0" complexity="0" filename="src/ServerScriptService/Modules/GameLogic.lua" line-rate="1" name="GameLogic">
-                    <lines><line hits="1" number="1"/></lines>
-                  </class>
-                </classes>
-              </package>
-              <package branch-rate="0" complexity="0" line-rate="1" name="src.StarterPlayer.StarterPlayerScripts.Modules">
-                <classes>
-                  <class branch-rate="0" complexity="0" filename="src/StarterPlayer/StarterPlayerScripts/Modules/ClientCoinAnimator.lua" line-rate="1" name="ClientCoinAnimator">
-                    <lines><line hits="1" number="1"/></lines>
-                  </class>
-                </classes>
-              </package>
-            </packages>
-          </coverage>
-          EOF
+          npm install -g run-in-roblox
+          npm install -g @highcenburg/luau-coverage
 
+      - name: Instrument code for coverage
+        run: |
+          luau-coverage install
+          luau-coverage instrument src
+
+      - name: Run Real Tests
+        env:
+          ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
+        run: run-in-roblox --place test.rbxlx --script scripts/run_tests.lua
+
+      - name: Generate Coverage Data
+        run: luau-coverage report --format lcov
+        
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
-          file: ./coverage.xml
-          fail_ci_if_error: false # optional (default = false)
-          token: ${{ secrets.CODECOV_TOKEN }} # required for private repos
+          file: ./lcov.info # luau-coverage generates lcov format
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build Final Place File
         run: rojo build -o SimpleRobloxGame.rbxlx
