@@ -1,0 +1,37 @@
+# Roblox
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+
+# Aftman
+.aftman/
+
+# Wally (Package manager, if added in the future)
+Packages/
+ServerPackages/
+_Index/
+wally.lock
+
+# OS (System files)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code / Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+
+# Additional tools (Node.js/npm)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs and temporary files
+*.log
+.temp/
+.tmp/
