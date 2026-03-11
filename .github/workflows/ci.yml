@@ -25,29 +25,12 @@ jobs:
 
       # Replacing the old run-in-roblox installation
       - name: Install Tools
-        run: |
-          npm install -g run-in-roblox
-          npm install -g @highcenburg/luau-coverage
-
-      - name: Instrument code for coverage
-        run: |
-          luau-coverage install
-          luau-coverage instrument src
+        run: npm install -g run-in-roblox
 
       - name: Run Real Tests
         env:
           ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
         run: run-in-roblox --place test.rbxlx --script scripts/run_tests.lua
-
-      - name: Generate Coverage Data
-        run: luau-coverage report --format lcov
-        
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          file: ./lcov.info # luau-coverage generates lcov format
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build Final Place File
         run: rojo build -o SimpleRobloxGame.rbxlx
