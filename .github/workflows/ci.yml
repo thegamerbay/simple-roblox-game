@@ -24,9 +24,9 @@ jobs:
         run: rojo build -o test.rbxlx
 
       - name: Install Roblox Studio
-        uses: luau-dev/setup-roblox-studio@v0.1.6
+        uses: OrbitalOwen/roblox-win-installer-action@1.1
         with:
-          channel: LIVE
+          cookie: ${{ secrets.ROBLOSECURITY }}
 
       - name: Install Tools
         run: npm install -g run-in-roblox
