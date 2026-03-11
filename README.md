@@ -14,12 +14,14 @@ A basic but complete starting point for a Roblox game, featuring server and clie
 
 This project isn't just a foundation; it comes with a built-in game loop that perfectly demonstrates core client-server interactions in Roblox:
 
-* **Objective:** Collect the glowing yellow orbs (Coins) that spawn randomly around the map.
+* **Objective:** Collect the glowing coins that spawn randomly around the map.
 * **Mechanics:** 
-  * As soon as a player's character touches an orb, it is instantly collected and destroyed.
+  * Coins look like real flat coins (cylinders) and feature a smooth hovering and rotating animation.
+  * As soon as a player's character touches a coin, it plays a pleasant sound, emits spark particles, and is instantly collected.
+  * There's a **20% chance** to spawn a **Rare Red Coin** that grants **5 points** instead of the usual 1 point for a yellow coin!
   * The player's **Leaderstats** track the collected coins and update their score on the Leaderboard in the top-right corner.
   * The server then automatically spawns a brand new coin nearby.
-* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of Server-Side Parts creation, `Touched` events, real-time GUI/Leaderboard updates, and keeping the game state secure on the server while the client renders it.
+* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of Server-Side Parts creation, `Touched` events, `RunService` animations, resource cleanup with `Debris`, real-time GUI/Leaderboard updates, and keeping the game state secure.
 
 ---
 
@@ -71,8 +73,8 @@ For Roblox Studio to receive files sent from VS Code, the receiving part of the 
 
 1. In Roblox Studio, click **Play** (`F5`) on either the Home or Test tab.
 2. Your **Output** window should greet you with the welcome message from your local script.
-3. On the map, you will spot a green baseplate and a glowing yellow neon sphere dropping from above.
-4. Run your character over to touch the sphere — it will disappear, and you'll be rewarded with **1 coin** in the top right leaderboard corner! In just a second, a brand new sphere will spawn for you to collect.
+3. On the map, you will spot a green baseplate raised slightly off the ground, and a floating animated coin.
+4. Run your character over to touch the coin — it will play a sound, explode into sparks, disappear, and you'll be rewarded with **1 or 5 coins** in the top right leaderboard corner! In just a second, a brand new coin will spawn for you to collect.
 
 
 ---
