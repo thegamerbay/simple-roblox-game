@@ -4,14 +4,10 @@
 ![Lua](https://img.shields.io/badge/Lua-Language-2C2D72?style=for-the-badge&logo=lua&logoColor=white)
 ![Rojo](https://img.shields.io/badge/Rojo-Sync-FF4B4B?style=for-the-badge)
 
-<div align="center">
-
 [![CI](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml/badge.svg)](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/thegamerbay/simple-roblox-game/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/github/thegamerbay/simple-roblox-game)
 [![Release](https://img.shields.io/github/v/release/thegamerbay/simple-roblox-game)](https://github.com/thegamerbay/simple-roblox-game/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-</div>
 
 A basic but complete starting point for a professional Roblox game, featuring modular server architecture, unit testing, and continuous integration! The project demonstrates an elegant synchronization process between your local IDE (VS Code) and Roblox Studio using **Rojo**, strict package management using **Wally**, and toolchain management using **Aftman**.
 
