@@ -9,7 +9,7 @@ on:
 jobs:
   build_and_test:
     name: Build & Test
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -24,10 +24,9 @@ jobs:
         run: rojo build -o test.rbxlx
 
       - name: Install Roblox Studio
-        uses: OrbitalOwen/roblox-win-installer-action@1.1
+        uses: DervexDev/setup-roblox-studio@v2.1
         with:
-          cookie: ${{ secrets.ROBLOSECURITY }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          roblosecurity: ${{ secrets.ROBLOSECURITY }}
 
       - name: Install Tools
         run: npm install -g run-in-roblox
