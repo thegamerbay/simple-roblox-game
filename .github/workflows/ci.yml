@@ -29,8 +29,7 @@ jobs:
           cookie: ${{ secrets.ROBLOSECURITY }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Tools
-        run: npm install -g @rojo-rbx/run-in-roblox@0.2.35
+
 
       - name: Run Real Tests
         env:
