@@ -30,7 +30,7 @@ jobs:
       - name: Run Real Tests
         env:
           ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
-        run: run-in-roblox --place test.rbxlx --script scripts/run_tests.lua
+        run: run-in-roblox run --place-file test.rbxlx --script scripts/run_tests.lua --universe-id 1 --place-id 1
 
       - name: Build Final Place File
         run: rojo build -o SimpleRobloxGame.rbxlx

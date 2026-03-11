@@ -5,7 +5,6 @@
 ![Rojo](https://img.shields.io/badge/Rojo-Sync-FF4B4B?style=for-the-badge)
 
 [![CI](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml/badge.svg)](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/github/thegamerbay/simple-roblox-game/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/github/thegamerbay/simple-roblox-game)
 [![Release](https://img.shields.io/github/v/release/thegamerbay/simple-roblox-game)](https://github.com/thegamerbay/simple-roblox-game/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
