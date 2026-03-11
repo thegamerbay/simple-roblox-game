@@ -24,9 +24,10 @@ jobs:
         run: rojo build -o test.rbxlx
 
       - name: Install Roblox Studio
-        uses: DervexDev/setup-roblox-studio@v2.1
+        uses: DervexDev/setup-roblox-studio@v1.0.1
         with:
-          roblosecurity: ${{ secrets.ROBLOSECURITY }}
+          cookie: ${{ secrets.ROBLOSECURITY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Tools
         run: npm install -g run-in-roblox
