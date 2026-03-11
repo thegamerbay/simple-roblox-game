@@ -39,7 +39,7 @@ jobs:
         env:
           ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
         run: |
-          lune build scripts/run_tests.lua -o run_tests.rbxmx
+          lune run scripts/build_test_plugin.luau
           run-in-roblox run --place-file test.rbxlx --script run_tests.rbxmx --universe-id 1 --place-id 1 --creator-id 1 --creator-type 0
 
       - name: Build Final Place File
