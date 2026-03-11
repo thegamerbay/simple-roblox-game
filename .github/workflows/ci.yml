@@ -34,7 +34,6 @@ jobs:
       - name: Install Tools
         run: |
           npm install -g run-in-roblox
-          npm install -g @lune-org/cli
 
       - name: Run Real Tests
         env:
