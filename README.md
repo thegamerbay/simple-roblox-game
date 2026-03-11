@@ -21,12 +21,12 @@ This project isn't just a foundation; it comes with a built-in game loop that pe
 
 * **Objective:** Collect the glowing coins that spawn randomly around the map.
 * **Mechanics:** 
-  * Coins look like real flat coins (cylinders) and feature a smooth hovering and rotating animation.
+  * Coins look like real flat coins (cylinders). Their smooth hovering and rotating animations are calculated **100% locally** on the client's machine (`ClientCoinAnimator.client.lua`), completely eliminating network replication lag and server-side ping spikes.
   * As soon as a player's character touches a coin, it plays a pleasant sound, emits spark particles, and is instantly collected.
   * There's a **20% chance** to spawn a **Rare Red Coin** that grants **5 points** instead of the usual 1 point for a yellow coin!
   * The player's **Leaderstats** track the collected coins and update their score on the Leaderboard in the top-right corner.
   * The server then automatically spawns a brand new coin nearby.
-* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of creating an isolated, testable **ModuleScript** (`CoinManager.lua`), utilizing `TestEZ` for specifications, and securely keeping the game state on the server (`GameLogic.server.lua`).
+* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of strict Luau type checking (`--!strict`), creating an isolated, testable **ModuleScript** (`CoinManager.lua`), utilizing `TestEZ` for specifications, and securely keeping the game state on the server while the client handles purely visual effects via `CollectionService` tags. Memory leaks are proactively prevented using the `Trove` design pattern upon coin collection.
 
 ---
 
@@ -35,7 +35,7 @@ This project isn't just a foundation; it comes with a built-in game loop that pe
 This project uses modern Roblox development standards:
 * **[Rojo](https://rojo.space/)**: Syncs external files into Roblox Studio.
 * **[Aftman](https://github.com/LPGhatguy/aftman)**: Cross-platform toolchain manager for Roblox CLI tools (Rojo, Wally, Selene).
-* **[Wally](https://wally.run/)**: The package manager for Roblox. We use it to pull our testing framework, **TestEZ**.
+* **[Wally](https://wally.run/)**: The package manager for Roblox. We use it to pull our testing framework, **TestEZ**, and memory management toolkit, **Trove**.
 * **[Selene](https://kampfkarren.github.io/selene/)**: A blazing fast linter crafted specifically for Luau and Roblox standard libraries.
 * **[GitHub Actions](https://github.com/features/actions)**: Automated CI/CD pipelines checking code quality, tests, and publishing `.rbxlx` places on releases.  Codecov integration automatically comments on pull requests.
 
