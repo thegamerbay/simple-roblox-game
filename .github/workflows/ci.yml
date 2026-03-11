@@ -31,10 +31,17 @@ jobs:
 
 
 
+      - name: Install Tools
+        run: |
+          npm install -g run-in-roblox
+          npm install -g @lune-org/cli
+
       - name: Run Real Tests
         env:
           ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
-        run: run-in-roblox --place test.rbxlx --script scripts/run_tests.lua
+        run: |
+          lune build scripts/run_tests.lua -o run_tests.rbxmx
+          run-in-roblox run --place-file test.rbxlx --script run_tests.rbxmx --universe-id 1 --place-id 1 --creator-id 1 --creator-type 0
 
       - name: Build Final Place File
         run: rojo build -o SimpleRobloxGame.rbxlx
