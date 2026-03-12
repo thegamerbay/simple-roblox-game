@@ -10,7 +10,7 @@ function GameLogic.init()
     local baseplate = Instance.new("Part")
     baseplate.Name = "Baseplate"
     baseplate.Size = Vector3.new(100, 1, 100)
-    baseplate.Position = Vector3.new(0, 5, 0) 
+    baseplate.Position = Vector3.new(0, 0, 0) 
     baseplate.Anchored = true
     baseplate.BrickColor = BrickColor.new("Dark green")
     baseplate.Parent = Workspace

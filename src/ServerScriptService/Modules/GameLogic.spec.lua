@@ -20,7 +20,7 @@ return function()
             expect(baseplate).to.be.ok()
             expect(baseplate.Name).to.equal("Baseplate")
             expect(baseplate.Anchored).to.equal(true)
-            expect(baseplate.Position.Y).to.equal(5)
+            expect(baseplate.Position.Y).to.equal(0)
 
             -- Restore
             CoinManager.spawnCoin = originalSpawn

@@ -66,7 +66,7 @@ function CoinManager.spawnCoin()
     coin.Shape = Enum.PartType.Cylinder
     coin.Size = Vector3.new(stats.thickness, stats.diameter, stats.diameter)
     
-    local startY = 9 
+    local startY = 4 
     local startPos = Vector3.new(math.random(-20, 20), startY, math.random(-20, 20))
     coin.Position = startPos
     coin.Transparency = 1 -- Invisible on the server
