@@ -3,7 +3,7 @@
   <h1>🎮 Simple Roblox Game 🎮</h1>
   <p><b>A basic but complete starting point for a professional Roblox game, featuring modular server architecture, unit testing, and continuous integration!</b></p>
   
-  [![Play Game](https://img.shields.io/badge/Play_Game-10b526?style=for-the-badge&logo=roblox&logoColor=white)](https://www.roblox.com/games/132532453664724/Simple-Roblox-Game)
+  [![Play Game](https://img.shields.io/badge/Play_Game-10b526?style=for-the-badge&logo=roblox&logoColor=white)](https://www.roblox.com/games/94459019303992/Simple-Roblox-Game)
   <br/>
   
   ![Roblox](https://img.shields.io/badge/Roblox-Studio-000000?style=for-the-badge&logo=roblox&logoColor=white)
