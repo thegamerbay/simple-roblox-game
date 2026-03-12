@@ -56,7 +56,9 @@ function GameLogic.init()
     spawnLocation.BrickColor = BrickColor.new("Medium stone grey")
     spawnLocation.Parent = Workspace
 
-    EnvironmentManager.spawnTrees()
+    task.spawn(function()
+        EnvironmentManager.spawnTrees()
+    end)
 
     Players.PlayerAdded:Connect(GameLogic.onPlayerAdded)
     Players.PlayerRemoving:Connect(function(player: Player)
