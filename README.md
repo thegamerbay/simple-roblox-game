@@ -84,6 +84,12 @@ selene src
 
 ---
 
+## 🙏 Acknowledgements
+
+Special thanks to the official [Roblox place-ci-cd-demo](https://github.com/Roblox/place-ci-cd-demo) repository, which served as an invaluable reference for figuring out how to run tests and deploy via the new Engine Open Cloud API!
+
+---
+
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute this project as you see fit.
