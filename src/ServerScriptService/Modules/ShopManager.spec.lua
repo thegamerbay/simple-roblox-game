@@ -19,7 +19,7 @@ return function()
             }
             
             function player:GetAttribute(name)
-                return attributes[name]
+                return attributes[name] or 0
             end
             
             function player:SetAttribute(name, value)
