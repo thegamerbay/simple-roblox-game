@@ -2,7 +2,6 @@
 local CoinManager = {}
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
-local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
 local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -71,7 +70,7 @@ function CoinManager.spawnCoin()
     local finalPos = Vector3.new(0, startY, 0)
 
     -- Give the server 15 attempts to find an empty spot
-    for attempt = 1, 15 do
+    for _ = 1, 15 do
         local testPos = Vector3.new(math.random(-20, 20), startY, math.random(-20, 20))
         
         -- Virtually check a box the size of the coin at this point

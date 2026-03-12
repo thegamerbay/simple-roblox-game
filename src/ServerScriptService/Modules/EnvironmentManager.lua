@@ -60,7 +60,7 @@ function EnvironmentManager.spawnTrees()
             
             -- Search for a free spot in the current zone (up to 15 attempts)
             local finalDelta = nil
-            for attempt = 1, 15 do
+            for _ = 1, 15 do
                 local randomX = math.random(zone.xMin, zone.xMax)
                 local randomZ = math.random(zone.zMin, zone.zMax)
                 

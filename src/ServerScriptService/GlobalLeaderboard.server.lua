@@ -72,7 +72,9 @@ local function updateBoard()
         -- Destroy old rows from all boards
         for _, frame in ipairs(listFrames) do
             for _, child in pairs(frame:GetChildren()) do
-                if child:IsA("TextLabel") then child:Destroy() end
+                if child:IsA("TextLabel") then
+                    child:Destroy()
+                end
             end
         end
 

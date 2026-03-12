@@ -7,9 +7,13 @@ return function()
         it("should create a Baseplate", function()
             -- Find and remove any existing Baseplate and SpawnLocation
             local existing = Workspace:FindFirstChild("Baseplate")
-            if existing then existing:Destroy() end
+            if existing then
+                existing:Destroy()
+            end
             local existingSpawn = Workspace:FindFirstChild("SpawnLocation")
-            if existingSpawn then existingSpawn:Destroy() end
+            if existingSpawn then
+                existingSpawn:Destroy()
+            end
 
             -- Stub CoinManager and EnvironmentManager so they don't loop or interfere with test execution
             local CoinManager = require(script.Parent.CoinManager)
@@ -47,7 +51,9 @@ return function()
             
             -- We need to mock some Player specific methods that GameLogic uses
             local connection = { Connect = function() end }
-            local function GetAttribute() return 0 end
+            local function GetAttribute()
+                return 0
+            end
             local function SetAttribute() end
 
             -- In pure Lua testing we just add these fields to our mocked model table
@@ -76,7 +82,9 @@ return function()
             local dummyPlayer = Instance.new("Model")
             dummyPlayer.Name = "TestPlayer"
             
-            local function GetAttribute() return 0 end
+            local function GetAttribute()
+                return 0
+            end
             local playerMock = dummyPlayer :: any
             playerMock.GetAttribute = GetAttribute
             playerMock.UserId = 12345678

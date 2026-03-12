@@ -56,7 +56,7 @@ end
 
 -- Animate all visual dummies every frame
 function ClientCoinAnimator.onRenderStepped(deltaTime: number)
-    for coin, data in pairs(ClientCoinAnimator.activeCoins) do
+    for _, data in pairs(ClientCoinAnimator.activeCoins) do
         data.timePassed += deltaTime
         local rotation = CFrame.Angles(0, math.rad(100) * data.timePassed, 0)
         local hoverOffset = Vector3.new(0, math.sin(data.timePassed * 3) * 0.5, 0)

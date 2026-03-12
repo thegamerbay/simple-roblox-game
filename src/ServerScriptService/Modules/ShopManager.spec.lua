@@ -92,20 +92,20 @@ return function()
             -- Base cost is 10. math.pow(2, 0) = 1. Cost is 10.
             local success1 = ShopManager.processPurchase(player, "Speed")
             expect(success1).to.equal(true)
-            expect(coins.Value).to.equal(90)
+            expect(coins.Value).to.equal(90) -- 100 - 10
             expect(attrs.SpeedPurchases).to.equal(1)
             
             -- Second purchase. math.pow(2, 1) = 2. Cost is 20.
             local success2 = ShopManager.processPurchase(player, "Speed")
             expect(success2).to.equal(true)
-            expect(coins.Value).to.equal(70)
+            expect(coins.Value).to.equal(70) -- 90 - 20
             expect(attrs.SpeedPurchases).to.equal(2)
             expect(humanoid.WalkSpeed).to.equal(24) -- 16 + 4 + 4
             
             -- Third purchase. math.pow(2, 2) = 4. Cost is 40.
             local success3 = ShopManager.processPurchase(player, "Speed")
             expect(success3).to.equal(true)
-            expect(coins.Value).to.equal(30)
+            expect(coins.Value).to.equal(30) -- 70 - 40
             expect(attrs.SpeedPurchases).to.equal(3)
             
             -- Fourth purchase. math.pow(2, 3) = 8. Cost is 80 -> Should fail, only has 30

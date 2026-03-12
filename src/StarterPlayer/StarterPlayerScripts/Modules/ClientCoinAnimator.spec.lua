@@ -13,7 +13,9 @@ return function()
             local folder = Instance.new("Folder")
             ClientCoinAnimator.onCoinAdded(folder :: any)
             local count = 0
-            for _ in pairs(ClientCoinAnimator.activeCoins) do count += 1 end
+            for _ in pairs(ClientCoinAnimator.activeCoins) do
+                count += 1
+            end
             expect(count).to.equal(0)
             folder:Destroy()
         end)

@@ -10,9 +10,12 @@ return function()
             expect(sound).to.be.ok()
             expect(math.abs(sound.Volume - 0.3) < 0.001).to.equal(true)
             
-            -- cleanup
-            if sound then sound:Destroy() end
-            if MusicPlayer.connection then MusicPlayer.connection:Disconnect() end
+            if sound then
+                sound:Destroy()
+            end
+            if MusicPlayer.connection then
+                MusicPlayer.connection:Disconnect()
+            end
         end)
     end)
     
@@ -30,8 +33,12 @@ return function()
             expect(MusicPlayer.sound.SoundId).to.equal(MusicPlayer.TRACK_LIST[2])
             
             local sound = SoundService:FindFirstChild("BackgroundMusic")
-            if sound then sound:Destroy() end
-            if MusicPlayer.connection then MusicPlayer.connection:Disconnect() end
+            if sound then
+                sound:Destroy()
+            end
+            if MusicPlayer.connection then
+                MusicPlayer.connection:Disconnect()
+            end
         end)
     end)
 end
