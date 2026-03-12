@@ -8,7 +8,7 @@ on:
 
 jobs:
   release:
-    name: Create Game Release
+    name: Create Game Release & Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -31,9 +31,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # To automatically deploy the game directly to Roblox:
-      # (You will need to create an API key in the Roblox Creator Dashboard and add it to Settings -> Secrets -> Actions)
-      # 
-      # - name: Publish to Roblox
-      #   run: |
-      #     rojo upload --asset_id YOUR_GAME_ID --api-key ${{ secrets.ROBLOX_API_KEY }}
+      # Deploy directly to Roblox using Open Cloud API
+      - name: Publish to Roblox
+        env:
+          ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
+        if: ${{ env.ROBLOX_API_KEY != '' }}
+        run: rojo upload default.project.json --api_key ${{ secrets.ROBLOX_API_KEY }} --universe_id ${{ vars.ROBLOX_PRODUCTION_UNIVERSE_ID }} --asset_id ${{ vars.ROBLOX_PRODUCTION_PLACE_ID }}

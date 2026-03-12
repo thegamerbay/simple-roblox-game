@@ -67,15 +67,17 @@ This project uses modern Roblox development standards:
 1. Press **Play** (`F5`) in Roblox Studio.
 2. Run into the floating coin to pick it up and see your points increase on the leaderboard.
 
-### Step 5: Configuring Open Cloud CI/CD (GitHub Actions)
-Our automated tests run on GitHub Actions using the official Roblox Open Cloud Luau Execution API. To enable this in your fork:
-1. Create an empty **Test Place** in Roblox Studio.
+### Step 5: Configuring Open Cloud CI/CD & Deployments (GitHub Actions)
+Our automated tests and release deployments run on GitHub Actions using official Roblox Open Cloud APIs. To enable this in your fork:
+1. Create two places in Roblox Studio: a **Test Place** (for CI) and a **Production Place** (for releases).
 2. Go to the [Roblox Creator Dashboard](https://create.roblox.com/docs/cloud/open-cloud/api-keys) and generate an Open Cloud API Key.
-3. Grant it the `universe.places:write` and `universe.place.luau-execution-session:write` permissions for your Test Place.
+3. Grant it the `universe.places:write` and `universe.place.luau-execution-session:write` permissions for **both** your Test and Production Places.
 4. Add the API Key as a Secret in your GitHub repository named `ROBLOX_API_KEY`.
-5. Add your Test Place IDs as Repository Variables named `ROBLOX_TEST_UNIVERSE_ID` and `ROBLOX_TEST_PLACE_ID`.
-Tests will now automatically run (and skip safely if the key isn't provided) when you push to `main` or create a PR!
+5. Add your Place IDs as Repository Variables:
+   * `ROBLOX_TEST_UNIVERSE_ID` & `ROBLOX_TEST_PLACE_ID` (for automated PR tests)
+   * `ROBLOX_PRODUCTION_UNIVERSE_ID` & `ROBLOX_PRODUCTION_PLACE_ID` (for automated deployments when you tag a release e.g. `v1.0.0`)
 
+Tests and deployments will now automatically run (and skip safely if the key isn't provided) when you push code or publish releases!
 ### 🔍 Linting Locally
 To run the Selene linter locally before pushing code:
 ```bash
