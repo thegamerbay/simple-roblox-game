@@ -74,10 +74,11 @@ function CoinManager.spawnCoin()
     coin.Material = Enum.Material.Neon
     coin.Anchored = true
     coin.CanCollide = false
-    coin.Parent = Workspace
-
+    
     -- Tag the coin so the client knows to animate it
     CollectionService:AddTag(coin, "AnimatedCoin")
+
+    coin.Parent = Workspace
 
     -- Setup Memory Management
     local coinTrove = Trove.new()
