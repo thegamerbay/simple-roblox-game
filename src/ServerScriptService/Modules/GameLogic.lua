@@ -2,6 +2,10 @@
 local GameLogic = {}
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
+local DataStoreService = game:GetService("DataStoreService")
+
+-- Create or connect to the database named "PlayerCoinsStore"
+local coinStore = DataStoreService:GetDataStore("PlayerCoinsStore")
 
 local CoinManager = require(script.Parent.CoinManager)
 
@@ -24,8 +28,9 @@ function GameLogic.init()
     spawnLocation.BrickColor = BrickColor.new("Medium stone grey")
     spawnLocation.Parent = Workspace
 
-    -- 2. Set up the points system
+    -- 2. Connect player added and removing events
     Players.PlayerAdded:Connect(GameLogic.onPlayerAdded)
+    Players.PlayerRemoving:Connect(GameLogic.onPlayerRemoving)
 
     -- 3. Start the game loop from the module
     CoinManager.spawnCoin()
@@ -40,6 +45,33 @@ function GameLogic.onPlayerAdded(player: Player)
     coins.Name = "Coins"
     coins.Value = 0
     coins.Parent = leaderstats
+
+    -- Load data on join (Wrap in pcall to protect against network errors)
+    local success, savedCoins = pcall(function()
+        return coinStore:GetAsync(tostring(player.UserId))
+    end)
+
+    if success and savedCoins then
+        coins.Value = savedCoins :: number
+    end
+end
+
+-- Function to save data when a player leaves
+function GameLogic.onPlayerRemoving(player: Player)
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        local coins = leaderstats:FindFirstChild("Coins")
+        if coins and coins:IsA("IntValue") then
+            -- Wrap the save request in a pcall
+            local success, errorMessage = pcall(function()
+                coinStore:SetAsync(tostring(player.UserId), coins.Value)
+            end)
+            
+            if not success then
+                warn("Failed to save coins for " .. player.Name .. ": " .. tostring(errorMessage))
+            end
+        end
+    end
 end
 
 return GameLogic

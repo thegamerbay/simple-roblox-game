@@ -36,11 +36,13 @@ return function()
     end)
 
     describe("GameLogic.onPlayerAdded", function()
-        it("should create leaderstats and Coins IntValue for player", function()
+        it("should create leaderstats and Coins IntValue for player, handling DataStore load errors gracefully", function()
             local dummyPlayer = Instance.new("Model")
             dummyPlayer.Name = "TestPlayer"
             
-            GameLogic.onPlayerAdded(dummyPlayer :: any)
+            expect(function()
+                GameLogic.onPlayerAdded(dummyPlayer :: any)
+            end).never.to.throw()
 
             local leaderstats = dummyPlayer:FindFirstChild("leaderstats")
             expect(leaderstats).to.be.ok()
@@ -49,6 +51,26 @@ return function()
             expect(coins).to.be.ok()
             expect(coins.Value).to.equal(0)
             expect(coins:IsA("IntValue")).to.equal(true)
+        end)
+    end)
+
+    describe("GameLogic.onPlayerRemoving", function()
+        it("should attempt to save coins and handle DataStore save errors gracefully without crashing", function()
+            local dummyPlayer = Instance.new("Model")
+            dummyPlayer.Name = "TestPlayer"
+
+            local leaderstats = Instance.new("Folder")
+            leaderstats.Name = "leaderstats"
+            leaderstats.Parent = dummyPlayer
+
+            local coins = Instance.new("IntValue")
+            coins.Name = "Coins"
+            coins.Value = 10
+            coins.Parent = leaderstats
+            
+            expect(function()
+                GameLogic.onPlayerRemoving(dummyPlayer :: any)
+            end).never.to.throw()
         end)
     end)
 end
