@@ -1,14 +1,34 @@
-# 🎮 Simple Roblox Game
+<div align="center">
+  <img src="assets/avatar.jpg" alt="Logo" width="256" height="256">
+  <h1>🎮 Simple Roblox Game 🎮</h1>
+  <p><b>A basic but complete starting point for a professional Roblox game, featuring modular server architecture, unit testing, and continuous integration!</b></p>
+  
+  ![Roblox](https://img.shields.io/badge/Roblox-Studio-000000?style=for-the-badge&logo=roblox&logoColor=white)
+  ![Lua](https://img.shields.io/badge/Lua-Language-2C2D72?style=for-the-badge&logo=lua&logoColor=white)
+  ![Rojo](https://img.shields.io/badge/Rojo-Sync-FF4B4B?style=for-the-badge)
+  <br/>
+  [![CI](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml/badge.svg)](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml)
+  [![Release](https://img.shields.io/github/v/release/thegamerbay/simple-roblox-game)](https://github.com/thegamerbay/simple-roblox-game/releases)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
 
-![Roblox](https://img.shields.io/badge/Roblox-Studio-000000?style=for-the-badge&logo=roblox&logoColor=white)
-![Lua](https://img.shields.io/badge/Lua-Language-2C2D72?style=for-the-badge&logo=lua&logoColor=white)
-![Rojo](https://img.shields.io/badge/Rojo-Sync-FF4B4B?style=for-the-badge)
+<br/>
 
-[![CI](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml/badge.svg)](https://github.com/thegamerbay/simple-roblox-game/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/thegamerbay/simple-roblox-game)](https://github.com/thegamerbay/simple-roblox-game/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+The project demonstrates an elegant synchronization process between your local IDE (VS Code) and Roblox Studio using **Rojo**, strict package management using **Wally**, and toolchain management using **Aftman**.
 
-A basic but complete starting point for a professional Roblox game, featuring modular server architecture, unit testing, and continuous integration! The project demonstrates an elegant synchronization process between your local IDE (VS Code) and Roblox Studio using **Rojo**, strict package management using **Wally**, and toolchain management using **Aftman**.
+---
+
+## 📸 Gallery
+
+<p align="center">
+  <img src="assets/001.jpg" width="49%">
+  <img src="assets/002.jpg" width="49%">
+</p>
+<p align="center">
+  <img src="assets/003.jpg" width="32%">
+  <img src="assets/004.jpg" width="32%">
+  <img src="assets/005.jpg" width="32%">
+</p>
 
 ---
 

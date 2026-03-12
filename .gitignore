@@ -8,7 +8,11 @@ roblox.yml
 # Aftman
 .aftman/
 
-# Wally (Package manager, if added in the future)
+# Rojo / Sync
+.rojo_plugin/
+default.project.json.lock
+
+# Wally
 Packages/
 ServerPackages/
 wally.lock
@@ -19,20 +23,21 @@ Thumbs.db
 desktop.ini
 
 # VS Code / Editors
-.vscode/*
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .idea/
 
-# Additional tools (Node.js/npm)
-node_modules/
-npm-debug.log
-yarn-error.log
+# Additional scripts
+scripts/python/__pycache__/
 
 # Logs and temporary files
 *.log
 .temp/
 .tmp/
-coverage.xml
+
+# Testing & CI
+coverage/
+*.xml
