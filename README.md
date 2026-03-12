@@ -25,6 +25,7 @@ This project isn't just a foundation; it comes with a built-in game loop that pe
   * There's a **20% chance** to spawn a **Rare Red Coin** that grants **5 points** instead of the usual 1 point for a yellow coin!
   * The player's **Leaderstats** track the collected coins and update their score on the Leaderboard in the top-right corner.
   * The server then automatically spawns a brand new coin nearby.
+  * **Background Music:** A client-side music player loop continuously plays classic Roblox tracks, allowing players to adjust volume in their own client settings (`MusicPlayer.client.lua`).
 * **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of strict Luau type checking (`--!strict`), creating an isolated, testable **ModuleScript** (`CoinManager.lua`), utilizing `TestEZ` for specifications, and securely keeping the game state on the server while the client handles purely visual effects via `CollectionService` tags. Memory leaks are proactively prevented using the `Trove` design pattern upon coin collection.
 
 ---

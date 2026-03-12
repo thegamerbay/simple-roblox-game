@@ -110,7 +110,7 @@ function CoinManager.spawnCoin()
                 end
                 
                 local sound = Instance.new("Sound")
-                sound.SoundId = "rbxassetid://1347140027"
+                sound.SoundId = "rbxassetid://127645268874265"
                 sound.Volume = 0.8
                 sound.Parent = character:FindFirstChild("Head") or Workspace
                 sound:Play()
