@@ -26,6 +26,7 @@ function ClientCoinAnimator.onCoinAdded(coin: BasePart)
     
     ClientCoinAnimator.activeCoins[coin] = {
         part = clone,
+        startPos = coin.Position,
         timePassed = 0
     }
 end
@@ -44,15 +45,13 @@ end
 -- Animate all visual dummies every frame
 function ClientCoinAnimator.onRenderStepped(deltaTime: number)
     for coin, data in pairs(ClientCoinAnimator.activeCoins) do
-        if not coin or not coin.Parent then continue end
-
         data.timePassed += deltaTime
         local rotation = CFrame.Angles(0, math.rad(100) * data.timePassed, 0)
         local hoverOffset = Vector3.new(0, math.sin(data.timePassed * 3) * 0.5, 0)
         
         -- Apply transformations to the purely visual clone
         if data.part and data.part.Parent then
-            data.part.CFrame = CFrame.new(coin.Position + hoverOffset) * rotation
+            data.part.CFrame = CFrame.new(data.startPos + hoverOffset) * rotation
         end
     end
 end
