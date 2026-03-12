@@ -5,9 +5,11 @@ return function()
 
     describe("GameLogic.init", function()
         it("should create a Baseplate", function()
-            -- Find and remove any existing Baseplate
+            -- Find and remove any existing Baseplate and SpawnLocation
             local existing = Workspace:FindFirstChild("Baseplate")
             if existing then existing:Destroy() end
+            local existingSpawn = Workspace:FindFirstChild("SpawnLocation")
+            if existingSpawn then existingSpawn:Destroy() end
 
             -- Stub CoinManager spawnCoin so it doesn't loop or interfere
             local CoinManager = require(script.Parent.CoinManager)
@@ -21,6 +23,12 @@ return function()
             expect(baseplate.Name).to.equal("Baseplate")
             expect(baseplate.Anchored).to.equal(true)
             expect(baseplate.Position.Y).to.equal(0)
+
+            local spawnLocation = Workspace:FindFirstChild("SpawnLocation")
+            expect(spawnLocation).to.be.ok()
+            expect(spawnLocation.Name).to.equal("SpawnLocation")
+            expect(spawnLocation.Anchored).to.equal(true)
+            expect(spawnLocation.Position.Y).to.equal(1)
 
             -- Restore
             CoinManager.spawnCoin = originalSpawn

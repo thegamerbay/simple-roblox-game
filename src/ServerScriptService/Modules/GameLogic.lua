@@ -15,6 +15,15 @@ function GameLogic.init()
     baseplate.BrickColor = BrickColor.new("Dark green")
     baseplate.Parent = Workspace
 
+    -- 1.5. Create a SpawnLocation
+    local spawnLocation = Instance.new("SpawnLocation")
+    spawnLocation.Name = "SpawnLocation"
+    spawnLocation.Size = Vector3.new(12, 1, 12)
+    spawnLocation.Position = Vector3.new(0, 1, 0)
+    spawnLocation.Anchored = true
+    spawnLocation.BrickColor = BrickColor.new("Medium stone grey")
+    spawnLocation.Parent = Workspace
+
     -- 2. Set up the points system
     Players.PlayerAdded:Connect(GameLogic.onPlayerAdded)
 
