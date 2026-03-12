@@ -27,10 +27,12 @@ return function()
 
             local data = ClientCoinAnimator.activeCoins[coin]
             expect(data).to.be.ok()
+            expect(data.startPos).to.equal(Vector3.new(10, 20, 30))
             
             local clone = data.part
             expect(clone).to.be.ok()
             expect(clone.Name).to.equal("VisualTestCoin")
+            expect(clone.Size).to.equal(Vector3.new(0.01, 0.01, 0.01))
             expect(clone.CanCollide).to.equal(false)
             expect(clone.Anchored).to.equal(true)
             expect(clone.Parent).to.equal(Workspace)

@@ -3,6 +3,7 @@ local ClientCoinAnimator = {}
 local CollectionService = game:GetService("CollectionService")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
+local TweenService = game:GetService("TweenService")
 
 ClientCoinAnimator.activeCoins = {}
 
@@ -11,11 +12,13 @@ function ClientCoinAnimator.onCoinAdded(coin: BasePart)
     if not coin:IsA("BasePart") then return end
     if ClientCoinAnimator.activeCoins[coin] then return end -- Prevent duplicates
 
+    local targetSize = coin.Size -- Remember original size
+
     -- Generate purely visual replica
     local clone = Instance.new("Part")
     clone.Name = "Visual" .. coin.Name
     clone.Shape = coin.Shape
-    clone.Size = coin.Size
+    clone.Size = Vector3.new(0.01, 0.01, 0.01) -- Start near zero
     clone.BrickColor = coin.BrickColor
     clone.Material = coin.Material
     clone.Anchored = true
@@ -23,6 +26,15 @@ function ClientCoinAnimator.onCoinAdded(coin: BasePart)
     clone.CastShadow = false -- Optimization
     clone.Position = coin.Position
     clone.Parent = Workspace
+    
+    -- Configure and play the animation
+    local tweenInfo = TweenInfo.new(
+        0.5, -- Animation duration
+        Enum.EasingStyle.Back, -- "Spring" style: slightly overshoots and bounces back
+        Enum.EasingDirection.Out
+    )
+    local tween = TweenService:Create(clone, tweenInfo, {Size = targetSize})
+    tween:Play()
     
     ClientCoinAnimator.activeCoins[coin] = {
         part = clone,
