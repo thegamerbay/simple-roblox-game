@@ -8,20 +8,28 @@ local coinStore = DataStoreService:GetDataStore("PlayerCoinsStore")
 local leaderboardStore = DataStoreService:GetOrderedDataStore("GlobalCoinLeaderboard")
 
 local CoinManager = require(script.Parent.CoinManager)
-local EnvironmentManager = require(script.Parent.EnvironmentManager) -- NEW LINE
+local EnvironmentManager = require(script.Parent.EnvironmentManager)
+local ShopManager = require(script.Parent.ShopManager)
 
--- NEW: Helper function to save a specific player's data
-function GameLogic.savePlayerData(player: Player)
+-- Updated save function
+local function savePlayerData(player: Player)
     local leaderstats = player:FindFirstChild("leaderstats")
     if leaderstats then
         local coins = leaderstats:FindFirstChild("Coins")
         if coins and coins:IsA("IntValue") then
-            -- 1. Save to the regular database
+            
+            -- NEW: Save an entire table (Dictionary) of data
+            local dataToSave = {
+                coins = coins.Value,
+                SpeedPurchases = player:GetAttribute("SpeedPurchases") or 0,
+                JumpPurchases = player:GetAttribute("JumpPurchases") or 0
+            }
+            
             pcall(function()
-                coinStore:SetAsync(tostring(player.UserId), coins.Value)
+                coinStore:SetAsync(tostring(player.UserId), dataToSave)
             end)
             
-            -- 2. Save to the special database for Top-20
+            -- For the leaderboard, we continue to save just one number
             pcall(function()
                 leaderboardStore:SetAsync(tostring(player.UserId), coins.Value)
             end)
@@ -30,7 +38,8 @@ function GameLogic.savePlayerData(player: Player)
 end
 
 function GameLogic.init()
-    -- 1. Create the baseplate
+    ShopManager.init()
+
     local baseplate = Instance.new("Part")
     baseplate.Name = "Baseplate"
     baseplate.Size = Vector3.new(100, 1, 100)
@@ -39,7 +48,6 @@ function GameLogic.init()
     baseplate.BrickColor = BrickColor.new("Dark green")
     baseplate.Parent = Workspace
 
-    -- 1.5. Create a SpawnLocation
     local spawnLocation = Instance.new("SpawnLocation")
     spawnLocation.Name = "SpawnLocation"
     spawnLocation.Size = Vector3.new(12, 1, 12)
@@ -48,27 +56,20 @@ function GameLogic.init()
     spawnLocation.BrickColor = BrickColor.new("Medium stone grey")
     spawnLocation.Parent = Workspace
 
-    -- 1.8 Place decorations
-    task.spawn(function()
-        EnvironmentManager.spawnTrees()
-    end)
+    EnvironmentManager.spawnTrees()
 
-    -- 2. Connect player added and removing events
     Players.PlayerAdded:Connect(GameLogic.onPlayerAdded)
     Players.PlayerRemoving:Connect(function(player: Player)
-        GameLogic.savePlayerData(player) -- Call our function when a player leaves
+        savePlayerData(player)
     end)
 
-    -- 3. Start the game loop from the module
     CoinManager.spawnCoin()
 
-    -- NEW: 4. Start the background auto-save process
     task.spawn(function()
         while true do
-            task.wait(60) -- Wait for 60 seconds
-            -- Go through the list of all players currently on the server
+            task.wait(60)
             for _, player in ipairs(Players:GetPlayers()) do
-                GameLogic.savePlayerData(player)
+                savePlayerData(player)
             end
         end
     end)
@@ -84,14 +85,27 @@ function GameLogic.onPlayerAdded(player: Player)
     coins.Value = 0
     coins.Parent = leaderstats
 
-    -- Load data on join
-    local success, savedCoins = pcall(function()
+    -- Load data
+    local success, savedData = pcall(function()
         return coinStore:GetAsync(tostring(player.UserId))
     end)
 
-    if success and savedCoins then
-        coins.Value = savedCoins :: number
+    if success and savedData then
+        -- DATA MIGRATION: If the player played before, their save is a number
+        if type(savedData) == "number" then
+            coins.Value = savedData
+        -- If they already have a new save, it's a table
+        elseif type(savedData) == "table" then
+            coins.Value = savedData.coins or 0
+            player:SetAttribute("SpeedPurchases", savedData.SpeedPurchases or 0)
+            player:SetAttribute("JumpPurchases", savedData.JumpPurchases or 0)
+        end
     end
+
+    -- NEW: Every time the character spawns/respawns, apply the boosts
+    player.CharacterAdded:Connect(function(character)
+        ShopManager.applyUpgrades(player, character)
+    end)
 end
 
 return GameLogic

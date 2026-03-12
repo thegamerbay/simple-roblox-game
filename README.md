@@ -20,17 +20,18 @@ This project isn't just a foundation; it comes with a built-in game loop that pe
 
 * **Objective:** Collect the glowing coins that spawn randomly around the map.
 * **Mechanics:** 
-  * Coins look like real flat coins (cylinders). Their smooth hovering and rotating animations are calculated **100% locally** on the client's machine (`ClientCoinAnimator.client.lua`), completely eliminating network replication lag and server-side ping spikes.
+  * Coins look like real flat coins (cylinders). Their smooth hovering and rotating animations are calculated **100% locally** on the client's machine (`ClientCoinAnimator.lua`), completely eliminating network replication lag and server-side ping spikes.
   * As soon as a player's character touches a coin, it plays a pleasant sound, emits spark particles, and is instantly collected.
   * There's a **20% chance** to spawn a **Rare Red Coin** that grants **5 points** instead of the usual 1 point for a yellow coin!
   * The player's **Leaderstats** track the collected coins and update their score locally.
   * **Global Leaderboard (Top 20):** A stylish neon 3D screen sits in the game world, automatically tracking and displaying the top 20 player scores globally using `OrderedDataStore`. It refreshes every 60 seconds.
-  * **Data Persistence & Auto-Save:** Player's coin balance is securely saved to Roblox's cloud databases (`DataStoreService`) upon leaving, and seamlessly restored from the `PlayerCoinsStore` the next time they join. An **Auto-Save** background process also protects data by saving all active players' progress every 60 seconds without hitting API rate limits.
+  * **Upgrade Shop:** Players can spend their coins to purchase character upgrades (e.g., Walk Speed and Jump Height) through a beautiful UI (`ClientShop.lua`). The server securely validates all purchases (`ShopManager.lua`) and attributes are used for state synchronization. Prices scale exponentially and purchases persist between sessions!
+  * **Data Persistence & Auto-Save:** Player's coin balances and shop upgrades are securely saved to Roblox's cloud databases (`DataStoreService`) using dictionaries upon leaving, and seamlessly restored from the `PlayerCoinsStore` the next time they join. An **Auto-Save** background process also protects data by saving all active players' progress every 60 seconds.
   * **Environment Generation:** A dedicated `EnvironmentManager` dynamically downloads random tree models via `InsertService`, sanitizes them of any potential malicious scripts, and distributes them evenly across 5 distinct zones on the map.
   * **Safe Spatial Queries:** Both the coins and trees utilize Roblox's `Workspace:GetPartBoundsInBox()` spatial query engine. This guarantees that objects are never accidentally spawned inside the Leaderboard, the spawn location, or each other, filtering out the baseplate using `OverlapParams`.
   * The server then automatically spawns a brand new coin nearby.
-  * **Background Music:** A client-side music player loop continuously plays classic Roblox tracks, allowing players to adjust volume in their own client settings (`MusicPlayer.client.lua`).
-* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of strict Luau type checking (`--!strict`), creating an isolated, testable **ModuleScript** (`CoinManager.lua`), utilizing `TestEZ` for specifications, securely keeping the game state on the server while the client handles purely visual effects via `CollectionService` tags, effectively using `OrderedDataStore` for asynchronous global ranking, and safely interacting with Roblox's physics engine. Memory leaks are proactively prevented using the `Trove` design pattern upon coin collection.
+  * **Background Music:** A client-side music player module continuously plays classic Roblox tracks in a loop (`MusicPlayer.lua`).
+* **Technical Highlights:** This loop acts as a brilliant, easy-to-read example of strict Luau type checking (`--!strict`), creating isolated, testable **ModuleScripts** (e.g., `ShopManager.lua`, `MusicPlayer.lua`), utilizing `TestEZ` for **100% specification test coverage** across both server and client domains. The game securely keeps the logic state on the server while the client handles purely visual effects via `CollectionService` tags, effectively using `OrderedDataStore` for asynchronous global ranking, and safely interacting with Roblox's physics engine. Memory leaks are proactively prevented using the `Trove` design pattern upon coin collection.
 
 ---
 
