@@ -26,10 +26,12 @@ return function()
                 attributes[name] = value
             end
             
+            local mockCoins = {Value = coinsAmount}
+            
             local leaderstats = {
                 FindFirstChild = function(_, name)
                     if name == "Coins" then
-                        return {Value = coinsAmount}
+                        return mockCoins
                     end
                     return nil
                 end
@@ -59,7 +61,7 @@ return function()
             
             player.Character = character
             
-            return player, attributes, leaderstats.FindFirstChild(nil, "Coins"), humanoid
+            return player, attributes, mockCoins, humanoid
         end
         
         it("should fail when buying an invalid item", function()
