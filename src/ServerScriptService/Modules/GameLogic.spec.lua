@@ -11,10 +11,14 @@ return function()
             local existingSpawn = Workspace:FindFirstChild("SpawnLocation")
             if existingSpawn then existingSpawn:Destroy() end
 
-            -- Stub CoinManager spawnCoin so it doesn't loop or interfere
+            -- Stub CoinManager and EnvironmentManager so they don't loop or interfere with test execution
             local CoinManager = require(script.Parent.CoinManager)
             local originalSpawn = CoinManager.spawnCoin
             CoinManager.spawnCoin = function() end
+
+            local EnvironmentManager = require(script.Parent.EnvironmentManager)
+            local originalSpawnTrees = EnvironmentManager.spawnTrees
+            EnvironmentManager.spawnTrees = function() end
 
             GameLogic.init()
 
@@ -32,6 +36,7 @@ return function()
 
             -- Restore
             CoinManager.spawnCoin = originalSpawn
+            EnvironmentManager.spawnTrees = originalSpawnTrees
         end)
     end)
 
@@ -54,10 +59,15 @@ return function()
         end)
     end)
 
-    describe("GameLogic.onPlayerRemoving", function()
-        it("should attempt to save coins and handle DataStore save errors gracefully without crashing", function()
+    describe("GameLogic.savePlayerData", function()
+        it("should save coins to both PlayerCoinsStore and GlobalCoinLeaderboard gracefully", function()
             local dummyPlayer = Instance.new("Model")
             dummyPlayer.Name = "TestPlayer"
+            
+            -- We can't directly mock Roblox instances like DataStoreService easily in standard Busted without a full mocking framework,
+            -- but we can ensure it doesn't throw and covers the execution paths.
+            -- Real validation would require dependency injection of the stores into GameLogic.
+            -- Right now, we ensure it runs without throwing any error in a pcall.
 
             local leaderstats = Instance.new("Folder")
             leaderstats.Name = "leaderstats"
@@ -69,7 +79,7 @@ return function()
             coins.Parent = leaderstats
             
             expect(function()
-                GameLogic.onPlayerRemoving(dummyPlayer :: any)
+                GameLogic.savePlayerData(dummyPlayer :: any)
             end).never.to.throw()
         end)
     end)

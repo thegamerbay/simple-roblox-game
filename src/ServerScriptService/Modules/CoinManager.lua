@@ -66,9 +66,26 @@ function CoinManager.spawnCoin()
     coin.Shape = Enum.PartType.Cylinder
     coin.Size = Vector3.new(stats.thickness, stats.diameter, stats.diameter)
     
+    -- === NEW SAFE SPAWN LOGIC ===
     local startY = 4 
-    local startPos = Vector3.new(math.random(-20, 20), startY, math.random(-20, 20))
-    coin.Position = startPos
+    local finalPos = Vector3.new(0, startY, 0)
+
+    -- Give the server 15 attempts to find an empty spot
+    for attempt = 1, 15 do
+        local testPos = Vector3.new(math.random(-20, 20), startY, math.random(-20, 20))
+        
+        -- Virtually check a box the size of the coin at this point
+        local partsInside = Workspace:GetPartBoundsInBox(CFrame.new(testPos), coin.Size)
+
+        -- If the array is empty, there is nothing at this spot
+        if #partsInside == 0 then
+            finalPos = testPos
+            break -- Found a free spot, break out of the loop!
+        end
+    end
+
+    coin.Position = finalPos
+    -- =======================================
     coin.Transparency = 1 -- Invisible on the server
     coin.BrickColor = stats.color
     coin.Material = Enum.Material.Neon
