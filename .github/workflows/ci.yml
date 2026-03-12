@@ -8,34 +8,31 @@ on:
 
 jobs:
   build_and_test:
-    name: Build & Test
-    runs-on: windows-latest
+    name: Build & Run Tests (Open Cloud)
+    runs-on: ubuntu-latest
+    env:
+      ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
+    concurrency:
+      group: luau-execution-${{ github.ref }}
+      cancel-in-progress: false # Open Cloud API limits concurrent requests
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Aftman
         uses: ok-nick/setup-aftman@v0.4.2
 
-      - name: Install dependencies
+      - name: Install dependencies (Wally)
         run: wally install
 
-      - name: Build Place File for Testing
-        run: rojo build -o test.rbxlx
+      - name: Build Place File (.rbxl)
+        run: rojo build default.project.json --output dist.rbxl
 
-      # Стабильный установщик Roblox Studio под Windows
-      - name: Install Roblox Studio
-        uses: OrbitalOwen/roblox-win-installer-action@1.1
-        with:
-          cookie: ${{ secrets.ROBLOSECURITY }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Real Tests
+      - name: Upload & Run Tests
+        if: ${{ env.ROBLOX_API_KEY != '' }}
         env:
-          ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
-        run: |
-          lune run scripts/build_test_plugin.luau
-          run-in-roblox run --place-file test.rbxlx --script run_tests.rbxmx --universe-id 1 --place-id 1 --creator-id 1 --creator-type 0
-
-      - name: Build Final Place File
-        run: rojo build -o SimpleRobloxGame.rbxlx
+          ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
+          ROBLOX_UNIVERSE_ID: ${{ vars.ROBLOX_TEST_UNIVERSE_ID }}
+          ROBLOX_PLACE_ID: ${{ vars.ROBLOX_TEST_PLACE_ID }}
+        # Run the wrapper script, passing the place file and test script
+        run: python3 scripts/python/upload_and_run_task.py dist.rbxl tasks/runTests.luau
