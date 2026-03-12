@@ -36,7 +36,7 @@ This project uses modern Roblox development standards:
 * **[Aftman](https://github.com/LPGhatguy/aftman)**: Cross-platform toolchain manager for Roblox CLI tools (Rojo, Wally, Selene).
 * **[Wally](https://wally.run/)**: The package manager for Roblox. We use it to pull our testing framework, **TestEZ**, and memory management toolkit, **Trove**.
 * **[Selene](https://kampfkarren.github.io/selene/)**: A blazing fast linter crafted specifically for Luau and Roblox standard libraries.
-* **[GitHub Actions](https://github.com/features/actions)**: Automated CI/CD pipelines checking code quality, tests, and publishing `.rbxlx` places on releases.  Codecov integration automatically comments on pull requests.
+* **[GitHub Actions](https://github.com/features/actions)**: Automated CI/CD pipelines checking code quality. We use the **Roblox Open Cloud Luau Execution API** to run our TestEZ test suites directly on Roblox servers without needing a vulnerable `run-in-roblox` pipeline!
 
 ---
 
@@ -65,9 +65,16 @@ This project uses modern Roblox development standards:
 
 ### Step 4: Playtesting & Unit Testing
 1. Press **Play** (`F5`) in Roblox Studio.
-2. In the Output window, you will immediately see the **TestEZ runner** executing our `CoinManager.spec.lua` tests and turning green!
-3. Run into the floating coin to pick it up and see your points increase on the leaderboard.
-4. *Note: If you publish the game, the test runner detects it is no longer in Studio and safely exits without performance hits.*
+2. Run into the floating coin to pick it up and see your points increase on the leaderboard.
+
+### Step 5: Configuring Open Cloud CI/CD (GitHub Actions)
+Our automated tests run on GitHub Actions using the official Roblox Open Cloud Luau Execution API. To enable this in your fork:
+1. Create an empty **Test Place** in Roblox Studio.
+2. Go to the [Roblox Creator Dashboard](https://create.roblox.com/docs/cloud/open-cloud/api-keys) and generate an Open Cloud API Key.
+3. Grant it the `universe.places:write` and `universe.place.luau-execution-session:write` permissions for your Test Place.
+4. Add the API Key as a Secret in your GitHub repository named `ROBLOX_API_KEY`.
+5. Add your Test Place IDs as Repository Variables named `ROBLOX_TEST_UNIVERSE_ID` and `ROBLOX_TEST_PLACE_ID`.
+Tests will now automatically run (and skip safely if the key isn't provided) when you push to `main` or create a PR!
 
 ### 🔍 Linting Locally
 To run the Selene linter locally before pushing code:
