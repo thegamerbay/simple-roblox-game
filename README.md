@@ -10,8 +10,6 @@
 
 A basic but complete starting point for a professional Roblox game, featuring modular server architecture, unit testing, and continuous integration! The project demonstrates an elegant synchronization process between your local IDE (VS Code) and Roblox Studio using **Rojo**, strict package management using **Wally**, and toolchain management using **Aftman**.
 
-🔗 **GitHub Repository:** [thegamerbay/simple-roblox-game](https://github.com/thegamerbay/simple-roblox-game)
-
 ---
 
 ## 🎯 Gameplay & Objectives
