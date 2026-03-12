@@ -102,45 +102,51 @@ function CoinManager.spawnCoin()
 
     -- Collecting event
     local touchConnection = coin.Touched:Connect(function(otherPart)
-        local character = otherPart.Parent
-        local humanoid = character:FindFirstChild("Humanoid")
-
-        if humanoid then
-            local player = Players:GetPlayerFromCharacter(character)
-            if player then
-                local collectPos = coin.Position
-                local collectColor = coin.Color
-
-                -- This will disconnect touched event and destroy the coin
-                coinTrove:Clean() 
-                if coin and coin.Parent then
-                    coin:Destroy()
-                end
-
-                local leaderstats = player:FindFirstChild("leaderstats")
-                if leaderstats then
-                    local coins = leaderstats:FindFirstChild("Coins")
-                    if coins and coins:IsA("IntValue") then
-                        coins.Value += stats.value
-                    end
-                end
-                
-                local sound = Instance.new("Sound")
-                sound.SoundId = "rbxassetid://127645268874265"
-                sound.Volume = 0.8
-                sound.Parent = character:FindFirstChild("Head") or Workspace
-                sound:Play()
-                Debris:AddItem(sound, 2)
-
-                CoinManager.createCollectEffect(collectPos, collectColor)
-                
-                task.wait(1)
-                CoinManager.spawnCoin()
-            end
-        end
+        CoinManager.handleCoinTouched(otherPart, coin, coinTrove, stats)
     end)
     
     coinTrove:Add(touchConnection)
+end
+
+function CoinManager.handleCoinTouched(otherPart: BasePart, coin: BasePart, coinTrove: any, stats: CoinStats)
+    local character = otherPart.Parent
+    if not character then return end
+    
+    local humanoid = character:FindFirstChild("Humanoid")
+
+    if humanoid then
+        local player = Players:GetPlayerFromCharacter(character)
+        if player then
+            local collectPos = coin.Position
+            local collectColor = coin.Color
+
+            -- This will disconnect touched event and destroy the coin
+            coinTrove:Clean() 
+            if coin and coin.Parent then
+                coin:Destroy()
+            end
+
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local coins = leaderstats:FindFirstChild("Coins")
+                if coins and coins:IsA("IntValue") then
+                    coins.Value += stats.value
+                end
+            end
+            
+            local sound = Instance.new("Sound")
+            sound.SoundId = "rbxassetid://127645268874265"
+            sound.Volume = 0.8
+            sound.Parent = character:FindFirstChild("Head") or Workspace
+            sound:Play()
+            Debris:AddItem(sound, 2)
+
+            CoinManager.createCollectEffect(collectPos, collectColor)
+            
+            task.wait(1)
+            CoinManager.spawnCoin()
+        end
+    end
 end
 
 return CoinManager

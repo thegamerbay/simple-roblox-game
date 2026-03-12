@@ -65,6 +65,27 @@ return function()
                 end)
             end).never.to.throw()
         end)
+
+        it("should create leaderstats and Coins IntValue for the player", function()
+            local playerMock = Instance.new("Folder")
+            playerMock.Name = "TestPlayer"
+            playerMock:SetAttribute("UserId", 12345678)
+
+            pcall(function()
+                GameLogic.onPlayerAdded(playerMock :: any)
+            end)
+
+            local leaderstats = playerMock:FindFirstChild("leaderstats")
+            expect(leaderstats).to.be.ok()
+            
+            if leaderstats then
+                local coins = leaderstats:FindFirstChild("Coins")
+                expect(coins).to.be.ok()
+                if coins then
+                    expect(coins:IsA("IntValue")).to.equal(true)
+                end
+            end
+        end)
     end)
 
     describe("GameLogic.savePlayerData", function()
