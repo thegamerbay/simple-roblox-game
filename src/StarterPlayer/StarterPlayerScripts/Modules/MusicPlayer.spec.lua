@@ -8,7 +8,7 @@ return function()
             MusicPlayer.init()
             local sound = SoundService:FindFirstChild("BackgroundMusic")
             expect(sound).to.be.ok()
-            expect(sound.Volume).to.equal(0.3)
+            expect(math.abs(sound.Volume - 0.3) < 0.001).to.equal(true)
             
             -- cleanup
             if sound then sound:Destroy() end

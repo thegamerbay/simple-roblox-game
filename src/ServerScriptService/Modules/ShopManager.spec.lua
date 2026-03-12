@@ -89,33 +89,33 @@ return function()
         it("should increase cost exponentially for subsequent purchases", function()
             local player, attrs, coins, humanoid = createMockPlayer(100)
             
-            -- First purchase (cost: 10)
+            -- Base cost is 10. math.pow(2, 0) = 1. Cost is 10.
             local success1 = ShopManager.processPurchase(player, "Speed")
             expect(success1).to.equal(true)
             expect(coins.Value).to.equal(90)
             expect(attrs.SpeedPurchases).to.equal(1)
             
-            -- Second purchase (cost: 20)
+            -- Second purchase. math.pow(2, 1) = 2. Cost is 20.
             local success2 = ShopManager.processPurchase(player, "Speed")
             expect(success2).to.equal(true)
             expect(coins.Value).to.equal(70)
             expect(attrs.SpeedPurchases).to.equal(2)
             expect(humanoid.WalkSpeed).to.equal(24) -- 16 + 4 + 4
             
-            -- Third purchase (cost: 40)
+            -- Third purchase. math.pow(2, 2) = 4. Cost is 40.
             local success3 = ShopManager.processPurchase(player, "Speed")
             expect(success3).to.equal(true)
             expect(coins.Value).to.equal(30)
             expect(attrs.SpeedPurchases).to.equal(3)
             
-            -- Fourth purchase (cost: 80) -> Should fail, only has 30
+            -- Fourth purchase. math.pow(2, 3) = 8. Cost is 80 -> Should fail, only has 30
             local success4, msg = ShopManager.processPurchase(player, "Speed")
             expect(success4).to.equal(false)
             expect(msg).to.equal("Need 80 coins!")
         end)
         
         it("should apply jump upgrade correctly", function()
-            local player, attrs, coins, humanoid = createMockPlayer(15)
+            local player, attrs, coins, humanoid = createMockPlayer(15) -- Math.pow(2, 0) * 15 = 15
             local success = ShopManager.processPurchase(player, "Jump")
             
             expect(success).to.equal(true)
