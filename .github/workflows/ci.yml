@@ -31,9 +31,10 @@ jobs:
 
       - name: Upload & Run Tests
         if: ${{ env.ROBLOX_API_KEY != '' }}
-        env:
-          ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
-          ROBLOX_UNIVERSE_ID: ${{ vars.ROBLOX_TEST_UNIVERSE_ID }}
-          ROBLOX_PLACE_ID: ${{ vars.ROBLOX_TEST_PLACE_ID }}
-        # Run the wrapper script, passing the place file and test script
-        run: python3 scripts/python/upload_and_run_task.py dist.rbxl tasks/runTests.luau
+        uses: thegamerbay/roblox-luau-execution-action@v1
+        with:
+          api_key: ${{ secrets.ROBLOX_API_KEY }}
+          universe_id: ${{ vars.ROBLOX_TEST_UNIVERSE_ID }}
+          place_id: ${{ vars.ROBLOX_TEST_PLACE_ID }}
+          place_file: 'dist.rbxl'
+          script_file: 'tasks/runTests.luau'
